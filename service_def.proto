@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+message Empty {}
+
+message Result {
+    string message = 1;
+}
+
+message DataPoint {
+   int32 CPUUtilization_Average=1;
+   int32 NetworkIn_Average=2;
+   double NetworkOut_Average=3;
+   double MemoryUtilization_Average=4;
+   double Final_Target=5;
+}
+
+message Batch {
+    repeated DataPoint list=1;
+}
+
+message RFW {
+    int32 RFW_ID=1;
+    string BenchmarkType=2;
+    string WorkloadMetric=3;
+    int32 BatchUnit=4;
+    int32 BatchID=5;
+    int32 BatchSize=6;
+    string DataType=7;
+    string DataAnalytics=8;
+}
+
+message RFD {
+    int32 RFW_ID=1;
+    int32 BatchID=2;
+    repeated Batch batches=3;
+    double analytics=4;
+}
+
+service BatchTransferService {
+    rpc CreateBatches (RFW) returns (Result) {}
+    rpc GetBatches (RFW) returns (RFD) {}
+    rpc Analyze (RFW) returns (RFD) {}
+}
